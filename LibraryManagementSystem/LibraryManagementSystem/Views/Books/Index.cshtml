@@ -1,0 +1,310 @@
+﻿@model LibraryManagementSystem.ViewModels.IBooksCustomData
+@{
+    ViewBag.Title = "Books";
+}
+
+<h2>Books</h2>
+
+<button class="btn btn-success" id="addBookButton">Add New Book</button>
+<button id="advancedFilterBtn" class="btn btn-link">Advanced Filter</button>
+<br />
+<br />
+
+<div id="advancedFilter" style="display: none;">
+    <form id="filterForm">
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="BookName">Book Name</label>
+                <input type="text" id="BookName" name="BookName" class="form-control" />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="CategoryId">Category</label>
+                <select id="CategoryId" name="CategoryId" class="form-control">
+                    <option value="">Select Category</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="AuthorId">Author</label>
+                <select id="AuthorId" name="AuthorId" class="form-control">
+                    <option value="">Select Author</option>
+                    @foreach (var author in Model.Authors)
+                    {
+                        <option value="@author.AuthorID">@author.FirstName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="IsAvailable">Available?</label>
+                <select class="form-control" id="IsReturned" name="IsReturned">
+                    <option value="">All</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+        </div>
+        <div style=" margin-left:20px;">
+            <button type="button" id="applyFilterBtn" class="btn btn-primary">Filter</button>
+            <button type="button" id="resetFilterBtn" class="btn btn-secondary">Reset</button>
+        </div>
+        <br />
+    </form>
+</div>
+
+<div class="modal fade" id="editBookModal" tabindex="-1" role="dialog" aria-labelledby="editBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBookModalLabel">Edit Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editBookContent">
+            </div>
+      
+        </div>
+    </div>
+</div>
+
+
+<div id="addBookModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="borrowModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="borrowModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="borrowModalLabel">Borrow Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="borrowForm">
+                    <div class="form-group">
+                        <label for="userId">Select Borrower</label>
+                        <select id="userId" name="userId" class="form-control">
+                            <!-- Options will be populated by server-side code -->
+                            @foreach (var borrower in Model.Borrowers)
+                            {
+                                <option value="@borrower.BorrowerID">@borrower.FirstName @borrower.LastName</option>
+                            }
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="submitBorrow" class="btn btn-primary">Borrow</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="booksTable" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width:100px">Actions</th>
+            <th>Book Title</th>
+            <th>Author Name</th>
+            <th>Total Copies</th>
+            <th>Available Copies</th>
+            <th>Published Date</th>
+            <th>Category Name</th>
+            <th style="width:90px">Borrow</th>
+        </tr>
+    </thead>
+    <tbody id="booksBody">
+        @foreach (var book in Model.Books)
+        {
+            <tr>
+                <td>
+                    <button class="btn btn-warning edit-btn" data-id="@book.BookID" title="Edit">
+                        <i class="fas fa-pencil-alt"></i> <!-- עפרון -->
+                    </button>
+                    <button class="btn btn-danger delete-btn" data-id="@book.BookID" title="Delete">
+                        <i class="fas fa-trash"></i> <!-- פח -->
+                    </button>
+                </td>
+                <td>@book.Title</td>
+                <td>@book.Author.FirstName</td>
+                <td>@book.NumberOfCopies</td>
+                <td>@book.AvailableCopies</td>
+                <td>@book.PublishedDate.ToString("yyyy.MM.dd")</td>
+                <td>@book.Category.CategoryName</td>
+                <td>
+                    <button class="btn btn-primary borrow-btn" data-id="@book.BookID">Borrow</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+
+
+
+
+            $(document).ready(function () {
+    $('#addBookButton').click(function () {
+        $.ajax({
+            url: '@Url.Action("NewBook", "Books")',
+            data: {fromHomePage: false},
+            type: 'GET',
+            success: function (data) {
+                $('#modalBodyContent').html(data);
+                $('#addBookModal').modal('show');
+            },
+            error: function () {
+                alert("An error occurred while loading the form.");
+            }
+        });
+    });
+            });
+            $(document).on('click', '.edit-btn', function () {
+    var bookID = $(this).data('id');
+    $.ajax({
+        url: '@Url.Action("Edit", "Books")',
+        type: 'GET',
+        data: { id: bookID },
+        success: function (data) {
+            $('#editBookContent').html(data);
+            $('#editBookModal').modal('show');
+        },
+        error: function () {
+            alert("An error occurred while loading the form.");
+        }
+    });
+});
+
+
+            function refreshBooksTable() {
+    $.ajax({
+        url: '@Url.Action("Index", "Books")',
+        type: 'GET',
+        success: function (data) {
+            $('#booksTable').html($(data).find('#booksTable').html());
+        },
+        error: function () {
+            alert("Failed to reload the books table.");
+        }
+    });
+} $('#advancedFilterBtn').click(function () {
+    $('#advancedFilter').toggle();
+    });
+
+            $('#NumberOfCopies').on('input', function () {
+                var totalCopies = $(this).val();
+                $('#AvailableCopies').val(totalCopies);
+            });
+            $(document).on('click', '.borrow-btn', function () {
+                var bookID = $(this).data('id');
+                openBorrowModal(bookID);
+            });
+             function openBorrowModal(bookID) {
+        $('#borrowModal').modal('show');
+
+        $('#submitBorrow').off('click').on('click', function () {
+            var userId = $('#userId').val();
+            if (userId) {
+                $.ajax({
+                    url: '@Url.Action("NewBorrow", "BorrowedBook")',
+                    type: 'POST',
+                    data: { bookId: bookID, userId: userId },
+                    success: function (result) {
+                        if (result.success) {
+                            $('#borrowModal').modal('hide');
+                            refreshBooksTable();
+                        } else {
+                            alert(result.message);
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred.");
+                    }
+                });
+            } else {
+                alert('Please select a borrower.');
+            }
+        });
+    }
+  $('#applyFilterBtn').click(function () {
+      var formData = $('#filterForm').serialize();
+
+
+    $.ajax({
+        url: '@Url.Action("Index", "Books")',
+        type: 'GET',
+        data: formData, 
+        success: function (data) {
+            $('#booksTable').html($(data).find('#booksTable').html());
+        },
+        error: function () {
+            alert("An error occurred.");
+        }
+    });
+});
+
+
+    $('#resetFilterBtn').click(function () {
+        $('#filterForm')[0].reset();
+
+        $.ajax({
+            url: '@Url.Action("Index", "Books")',
+            type: 'GET',
+            success: function (data) {
+                $('#booksTable').html($(data).find('#booksTable').html()); // רענון הטבלה
+            },
+            error: function () {
+                alert("An error occurred.");
+            }
+        });
+
+});
+
+            $(document).on('click', '.delete-btn', function () {
+                var bookID = $(this).data('id');
+                if (confirm('Are you sure you want to delete this book?')) {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Books")',
+                        type: 'POST',
+                        data: { id: bookID },
+                        success: function (result) {
+                            if (result.success) {
+                                alert(result.message);
+                                location.reload();
+                            } else {
+                                alert(result.message);
+                            }
+                        },
+                        error: function () {
+                            alert("An error occurred.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

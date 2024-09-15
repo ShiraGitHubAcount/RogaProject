@@ -1,0 +1,70 @@
+﻿@model LibraryManagementSystem.ViewModels.HomePageViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="library-background" style="background-image: url('/path/to/library-image.jpg'); background-size: cover; padding: 50px 0;">
+    <div class="container text-center">
+        <h1 class="text-white">Welcome to Our Library</h1>
+        <p class="text-white lead">Discover our latest books and return borrowed books on time!</p>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="new-books-section" style="background-color: #f9f9f9; padding: 20px; border-radius: 10px;">
+                <h2 class="text-center">Newly Released Books</h2>
+                <div class="row">
+                    @foreach (var book in Model.NewBooks.Take(5))
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                @*<img src="@book.CoverImageUrl" class="card-img-top" alt="@book.Title" style="height: 200px; object-fit: cover;">*@
+                                <div class="card-body">
+                                    <h5 class="card-title">@book.Title</h5>
+                                    <p class="card-text">Published on: @book.PublishedDate.ToString("MMMM dd, yyyy")</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <div class="alert alert-warning" role="alert">
+                <strong>Important:</strong> Please return borrowed books within two weeks or extend the loan period.
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .library-background {
+        text-align: center;
+        color: white;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .new-books-section h2 {
+        margin-bottom: 20px;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .alert {
+        font-size: 18px;
+    }
+</style>

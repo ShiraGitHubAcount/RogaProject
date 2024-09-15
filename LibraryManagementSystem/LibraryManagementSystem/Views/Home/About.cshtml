@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "About";
+    ViewBag.Message = "Library Opening Hours";
+}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card shadow-sm border-0">
+                <div class="card-header" style=" color: red;">
+                    <h2 class="font-weight-bold">@ViewBag.Message</h2>
+                </div>
+                <div class="card-body p-4">
+                    <h4>Welcome to the Library</h4>
+                    <p>Below are the library's opening hours for each day of the week:</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead style="background-color: #f2f2f2;">
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Opening Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Sunday</td>
+                                    <td class="text-danger font-weight-bold">Closed</td>
+                                </tr>
+                                <tr>
+                                    <td>Monday</td>
+                                    <td>9:00 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Tuesday</td>
+                                    <td>9:00 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Wednesday</td>
+                                    <td>9:00 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday</td>
+                                    <td>9:00 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Friday</td>
+                                    <td>9:00 AM - 2:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Saturday</td>
+                                    <td class="text-danger font-weight-bold">Closed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+           
+            </div>
+        </div>
+    </div>
+</div>

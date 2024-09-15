@@ -1,0 +1,72 @@
+﻿@model LibraryManagementSystem.ViewModels.IBookCustomData
+
+<h2>Edit Book</h2>
+<form id="editBookForm">
+    <input type="hidden" id="BookID" name="BookID" value="@Model.Book.BookID" />
+    <div class="form-group">
+        <label for="Title">Book Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model.Book.Title" required>
+    </div>
+    <div class="form-group">
+        <label for="AuthorID">Author</label>
+        <select class="form-control" id="AuthorID" name="AuthorID" required>
+            @foreach (var author in Model.Authors)
+            {
+                <option value="@author.AuthorID" @(author.AuthorID == Model.Book.AuthorID ? "selected" : "")>@author.FirstName</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="CategoryID">Category</label>
+        <select class="form-control" id="CategoryID" name="CategoryID" required>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.CategoryId" @(category.CategoryId == Model.Book.CategoryId ? "selected" : "")>@category.CategoryName</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="NumberOfCopies">Total Copies</label>
+        <input type="number" class="form-control" id="NumberOfCopies" name="NumberOfCopies" value="@Model.Book.NumberOfCopies" required>
+    </div>
+    <div class="form-group">
+        <label for="AvailableCopies">Available Copies</label>
+        <input type="number" class="form-control" id="AvailableCopies" name="AvailableCopies" value="@Model.Book.AvailableCopies" >
+    </div>
+    <div class="form-group">
+        <label for="PublishedDate">Published Date</label>
+        <input type="date" class="form-control" id="PublishedDate" name="PublishedDate" value="@Model.Book.PublishedDate.ToString("yyyy-MM-dd")" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Save changes</button>
+</form>
+
+<script type="text/javascript">
+    $('#NumberOfCopies').on('input', function () {
+        var totalCopies = $(this).val();
+        $('#AvailableCopies').val(totalCopies);
+    });
+
+    $('#editBookForm').submit(function (e) {
+        e.preventDefault();
+
+        var formData = $(this).serialize(); // Get form data
+
+        $.ajax({
+            url: '@Url.Action("Edit", "Books")',
+            type: 'POST',
+            data: formData,
+            success: function (result) {
+                if (result.success) {
+                    $('#editBookModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                alert("An error occurred.");
+            }
+        });
+    });
+</script>
+
