@@ -8,9 +8,9 @@ namespace LibraryManagementSystem.ViewModels
 {
     public class BorrowedBooksViewModel
     {
-        public IList<Book> Books { get; set; }
-        public IList<Borrower> Borrowers { get; set; }
-        public IList<Models.BorrowedBook> BorrowedBooks { get; set; }
+        public List<Book> Books { get; set; }
+        public List<Borrower> Borrowers { get; set; }
+        public List<Models.BorrowedBook> BorrowedBooks { get; set; }
     }
     public class BorrowedBookSearchForm
     {

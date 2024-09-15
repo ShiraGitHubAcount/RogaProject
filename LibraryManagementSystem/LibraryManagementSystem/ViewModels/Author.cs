@@ -9,12 +9,12 @@ namespace LibraryManagementSystem.ViewModels
 {
     public class IBookCustomData
     {
-          public IList<Book> Books { get; set; }
-          public  IList<Author> Authors { get; set; }
-        public IList<Category> Categories { get; set; }
+          public List<Book> Books { get; set; }
+          public  List<Author> Authors { get; set; }
+        public List<Category> Categories { get; set; }
         public Book Book { get; set; }
         public bool IsEdit { get; set; }
-        public IList<AuthorBookViewModel> AuthorBookData { get; set; }
+        public List<AuthorBookViewModel> AuthorBookData { get; set; }
 }
     public class AuthorBookViewModel
     {

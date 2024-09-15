@@ -8,17 +8,17 @@ namespace LibraryManagementSystem.ViewModels
 {
     public class IBooksCustomData
     {
-        public IList<Book> Books { get; set; }
-        public IList<Author> Authors { get; set; }
-        public IList<Category> Categories { get; set; }
-        public IList<Borrower> Borrowers { get; set; }
+        public List<Book> Books { get; set; }
+        public List<Author> Authors { get; set; }
+        public List<Category> Categories { get; set; }
+        public List<Borrower> Borrowers { get; set; }
 
     }
     public class NewBookCustomData
     {
-        public IList<Book> Books { get; set; }
-        public IList<Author> Authors { get; set; }
-        public IList<Category> Categories { get; set; }
+        public List<Book> Books { get; set; }
+        public List<Author> Authors { get; set; }
+        public List<Category> Categories { get; set; }
         public string Title { get; set; }
         public DateTime PublishedDate { get; set; }
         public int NumberOfCopies { get; set; }
